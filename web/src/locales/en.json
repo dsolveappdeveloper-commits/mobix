@@ -1,0 +1,31 @@
+{
+  "app": {
+    "name": "MobiX",
+    "tagline": "Repair shop management"
+  },
+  "login": {
+    "headline1": "Repair smarter.",
+    "headline2": "Run better.",
+    "subtitle": "One workspace for jobs, inventory, billing and customer updates.",
+    "feature1": "Track every repair",
+    "feature2": "Manage parts & stock",
+    "feature3": "Bill with confidence",
+    "welcome": "Welcome back",
+    "signInTo": "Sign in to your workspace",
+    "identifier": "Email or mobile number",
+    "identifierPlaceholder": "Enter your email or mobile number",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "remember": "Remember me",
+    "forgot": "Forgot password?",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "or": "OR",
+    "signInOtp": "Sign in with OTP",
+    "newTo": "New to MobiX?",
+    "createAccount": "Create an account",
+    "secure": "Secure access • Your shop data stays private",
+    "required": "This field is required",
+    "genericError": "Something went wrong. Please try again."
+  }
+}

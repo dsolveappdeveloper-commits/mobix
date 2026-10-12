@@ -1,0 +1,5 @@
+{
+  "terminal.integrated.env.windows": {
+    "Path": "D:\\xampp82\\php;${env:Path}"
+  }
+}
