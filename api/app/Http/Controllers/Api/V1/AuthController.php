@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Support\DefaultRoles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -108,4 +109,77 @@ class AuthController extends Controller
             'user'    => $user->only(['id', 'name', 'mobile', 'email', 'shop_id', 'role_id']),
         ], 201);
     }
+
+     public function login(Request $request): JsonResponse
+    {
+        $input = $request->validate([
+            'identifier' => ['required', 'string'],
+            'password'   => ['required', 'string'],
+            'remember'   => ['sometimes', 'boolean'],
+        ]);
+
+        $identifier = $input['identifier'];
+
+        // failures count only after the last success, within 15 minutes
+        $since = now()->subMinutes(15);
+        $lastSuccess = DB::table('login_logs')
+            ->where('identifier', $identifier)
+            ->where('status', 'success')
+            ->max('created_at');
+
+        if ($lastSuccess && Carbon::parse($lastSuccess)->gt($since)) {
+            $since = Carbon::parse($lastSuccess);
+        }
+
+        $fails = DB::table('login_logs')
+            ->where('identifier', $identifier)
+            ->where('status', 'failed')
+            ->where('created_at', '>', $since)
+            ->count();
+
+        if ($fails >= 5) {
+            $this->logAttempt(null, $identifier, 'locked', $request);
+
+            return response()->json([
+                'message' => 'Too many wrong attempts. Try again after 15 minutes.',
+            ], 429);
+        }
+
+        $user = User::where('mobile', $identifier)
+            ->orWhere('email', $identifier)
+            ->first();
+
+        if (! $user || ! $user->is_active || ! Hash::check($input['password'], $user->password)) {
+            $this->logAttempt($user, $identifier, 'failed', $request);
+
+            return response()->json(['message' => 'Invalid credentials.'], 401);
+        }
+
+        $this->logAttempt($user, $identifier, 'success', $request);
+
+        $expires = ($input['remember'] ?? false) ? now()->addDays(30) : now()->addHours(12);
+
+        return response()->json([
+            'message' => 'Login success.',
+            'token'   => $user->createToken('web', ['*'], $expires)->plainTextToken,
+            'user'    => $user->only(['id', 'name', 'mobile', 'email', 'shop_id', 'role_id']),
+        ]);
+    }
+
+    private function logAttempt(?User $user, string $identifier, string $status, Request $request): void
+    {
+        DB::table('login_logs')->insert([
+            'shop_id'    => $user?->shop_id,
+            'user_id'    => $user?->id,
+            'identifier' => $identifier,
+            'status'     => $status,
+            'ip_address' => $request->ip(),
+            'device'     => substr((string) $request->userAgent(), 0, 255),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
 }
+
+
+
