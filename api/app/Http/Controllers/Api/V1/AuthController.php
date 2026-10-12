@@ -166,6 +166,13 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out.']);
+    }
+
     private function logAttempt(?User $user, string $identifier, string $status, Request $request): void
     {
         DB::table('login_logs')->insert([
