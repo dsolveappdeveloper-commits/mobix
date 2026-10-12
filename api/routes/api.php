@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\StaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +33,8 @@ Route::prefix('v1')->group(function () {
         Route::middleware('permission:settings,create')->post('/staff', [StaffController::class, 'store']);
         Route::middleware('permission:settings,edit')->put('/staff/{id}', [StaffController::class, 'update']);
         Route::middleware('permission:settings,delete')->delete('/staff/{id}', [StaffController::class, 'destroy']);
+
+        Route::middleware('permission:settings,view')->get('/roles', [RoleController::class, 'index']);
+        Route::middleware('permission:settings,edit')->put('/roles/{id}/permissions', [RoleController::class, 'updatePermissions']);
     });
 });
