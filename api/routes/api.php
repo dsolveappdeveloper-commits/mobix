@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\StaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,11 @@ Route::prefix('v1')->group(function () {
             ->middleware('permission:settings,edit');
         Route::delete('/branches/{branch}', [BranchController::class, 'destroy'])
             ->middleware('permission:settings,delete');
+
+        Route::middleware('permission:settings,view')->get('/staff', [StaffController::class, 'index']);
+        Route::middleware('permission:settings,view')->get('/staff/{id}', [StaffController::class, 'show']);
+        Route::middleware('permission:settings,create')->post('/staff', [StaffController::class, 'store']);
+        Route::middleware('permission:settings,edit')->put('/staff/{id}', [StaffController::class, 'update']);
+        Route::middleware('permission:settings,delete')->delete('/staff/{id}', [StaffController::class, 'destroy']);
     });
 });
