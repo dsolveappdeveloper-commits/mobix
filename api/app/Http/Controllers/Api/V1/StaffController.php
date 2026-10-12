@@ -46,6 +46,19 @@ class StaffController extends Controller
         ];
     }
 
+    private function isLastActiveAdmin(User $user): bool
+    {
+        if ($user->role?->name !== 'Admin') {
+            return false;
+        }
+
+        return User::where('shop_id', $user->shop_id)
+            ->where('role_id', $user->role_id)
+            ->where('is_active', true)
+            ->where('id', '!=', $user->id)
+            ->doesntExist();
+    }
+
     private function syncBranches(User $user, array $branchIds): void
     {
         $pivot = [];
@@ -93,7 +106,7 @@ class StaffController extends Controller
         return $this->staffQuery($request)->findOrFail($id);
     }
 
-    public function update(Request $request, int $id): User
+    public function update(Request $request, int $id): User|JsonResponse
     {
         $user = $this->staffQuery($request)->findOrFail($id);
 
@@ -101,6 +114,13 @@ class StaffController extends Controller
 
         if (array_key_exists('is_active', $data) && ! $data['is_active'] && $user->id === $request->user()->id) {
             return response()->json(['message' => 'You cannot deactivate yourself.'], 422);
+        }
+
+        $losingAdmin = (array_key_exists('is_active', $data) && ! $data['is_active'])
+            || (isset($data['role_id']) && (int) $data['role_id'] !== $user->role_id);
+
+        if ($losingAdmin && $this->isLastActiveAdmin($user)) {
+            return response()->json(['message' => 'The shop must keep at least one active Admin.'], 422);
         }
 
         $branchIds = $data['branch_ids'] ?? null;
@@ -126,6 +146,10 @@ class StaffController extends Controller
 
         if ($user->id === $request->user()->id) {
             return response()->json(['message' => 'You cannot delete yourself.'], 422);
+        }
+
+        if ($this->isLastActiveAdmin($user)) {
+            return response()->json(['message' => 'The shop must keep at least one active Admin.'], 422);
         }
 
         $user->tokens()->delete();
