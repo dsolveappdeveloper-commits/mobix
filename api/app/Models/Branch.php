@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToShop;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BelongsToShop;
 
     protected $fillable = [
         'shop_id', 'name', 'code', 'address', 'phone',
