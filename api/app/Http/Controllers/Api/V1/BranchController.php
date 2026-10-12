@@ -55,9 +55,11 @@ class BranchController extends Controller
         return $branch;
     }
 
-    public function update(Request $request, Branch $branch): Branch
-    {
-        $request->merge(['code' => strtoupper((string) $request->code)]);
+        public function update(Request $request, Branch $branch): Branch
+        {
+        if ($request->has('code')) {
+            $request->merge(['code' => strtoupper((string) $request->code)]);
+        }
 
         $data = $request->validate([
             'name'           => ['sometimes', 'required', 'string', 'max:255'],
