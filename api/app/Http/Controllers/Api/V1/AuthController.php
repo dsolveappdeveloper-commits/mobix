@@ -166,6 +166,34 @@ class AuthController extends Controller
         ]);
     }
 
+    public function me(Request $request): JsonResponse
+    {
+        $user = $request->user()->load('role:id,name');
+
+        $permissions = DB::table('role_permissions')
+            ->where('role_id', $user->role_id)
+            ->get()
+            ->mapWithKeys(fn ($p) => [$p->module => [
+                'view'   => (bool) $p->can_view,
+                'create' => (bool) $p->can_create,
+                'edit'   => (bool) $p->can_edit,
+                'delete' => (bool) $p->can_delete,
+                'export' => (bool) $p->can_export,
+            ]]);
+
+        $branches = $user->role?->name === 'Admin'
+            ? Branch::orderBy('name')->get(['id', 'name', 'code'])
+            : $user->branches()->orderBy('name')->get(['branches.id', 'branches.name', 'branches.code']);
+
+        return response()->json([
+            'user'        => $user->only(['id', 'name', 'mobile', 'email', 'shop_id']),
+            'role'        => $user->role,
+            'permissions' => $permissions,
+            'branches'    => $branches,
+        ]);
+    }
+
+
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
