@@ -3,6 +3,28 @@
     "name": "MobiX",
     "tagline": "Repair shop management"
   },
+  "menu": {
+    "dashboard": "Dashboard",
+    "jobs": "Jobs",
+    "customers": "Customers",
+    "sales": "Sales (POS)",
+    "inventory": "Inventory",
+    "purchases": "Purchases",
+    "billing": "Billing",
+    "expenses": "Expenses",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "topbar": {
+    "allBranches": "All branches",
+    "searchPlaceholder": "Search job no, mobile, IMEI, invoice no",
+    "new": "New",
+    "newJob": "New Job",
+    "newSale": "New Sale",
+    "newCustomer": "New Customer",
+    "notifications": "Notifications",
+    "logout": "Logout"
+  },
   "login": {
     "headline1": "Repair smarter.",
     "headline2": "Run better.",
@@ -26,6 +48,7 @@
     "createAccount": "Create an account",
     "secure": "Secure access • Your shop data stays private",
     "required": "This field is required",
-    "genericError": "Something went wrong. Please try again."
+    "genericError": "Something went wrong. Please try again.",
+    "loggedOut": "You have been logged out."
   }
 }

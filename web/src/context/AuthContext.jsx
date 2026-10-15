@@ -6,6 +6,16 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [me, setMe] = useState(null);
   const [loading, setLoading] = useState(Boolean(localStorage.getItem('mobix_token')));
+
+  //all
+  const [branchId, setBranchIdState] = useState(
+    () => localStorage.getItem('mobix_branch') || 'all'
+  );
+
+  const setBranchId = (id) => {
+    localStorage.setItem('mobix_branch', String(id));
+    setBranchIdState(String(id));
+  };
   useEffect(() => {
     if (!localStorage.getItem('mobix_token')) return;
 
@@ -42,7 +52,7 @@ export function AuthProvider({ children }) {
   const can = (module, action = 'view') => Boolean(me?.permissions?.[module]?.[action]);
 
   return (
-    <AuthContext.Provider value={{ me, loading, login, logout, can }}>
+    <AuthContext.Provider value={{ me, loading, login, logout, can, branchId, setBranchId }}>
       {children}
     </AuthContext.Provider>
   );

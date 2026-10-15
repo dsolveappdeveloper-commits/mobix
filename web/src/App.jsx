@@ -1,20 +1,19 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import Layout from './layout/Layout';
 import Login from './pages/Login';
 
-function Home() {
-  const { me, logout, can } = useAuth();
+// Temporary placeholder, real Dashboard Phase 6 la varum
+function Dashboard() {
+  const { me } = useAuth();
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h5" sx={{ mb: 1 }}>
-        Hi {me.user.name} ({me.role.name})
+    <Box>
+      <Typography variant="h4" sx={{ mb: 0.5 }}>Dashboard</Typography>
+      <Typography color="text.secondary">
+        Welcome back, {me.user.name}. Dashboard coming soon.
       </Typography>
-      <Typography sx={{ mb: 2 }}>
-        Settings access: {can('settings') ? 'Yes' : 'No'} | Branches: {me.branches.length}
-      </Typography>
-      <Button variant="outlined" onClick={logout}>Logout</Button>
     </Box>
   );
 }
@@ -39,7 +38,12 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
+
+          {/* Login aana pages ellam Layout kulla varum */}
+          <Route element={<RequireAuth><Layout /></RequireAuth>}>
+            <Route path="/" element={<Dashboard />} />
+          </Route>
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

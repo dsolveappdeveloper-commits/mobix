@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Alert, Box, Button, Checkbox, Divider, FormControlLabel, IconButton,
@@ -50,6 +50,7 @@ function FieldLabel({ children }) {
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
   const [identifier, setIdentifier] = useState('');
@@ -142,6 +143,12 @@ export default function Login() {
             </Typography>
             <Typography sx={{ color: brand.muted, mt: 0.5 }}>{t('login.signInTo')}</Typography>
           </Box>
+
+           {location.state?.loggedOut && !error && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {t('login.loggedOut')}
+            </Alert>
+          )}
 
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
