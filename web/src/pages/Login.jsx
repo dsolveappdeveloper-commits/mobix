@@ -15,7 +15,8 @@ import VerifiedUserOutlined from '@mui/icons-material/VerifiedUserOutlined';
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined';
 import ReceiptLongOutlined from '@mui/icons-material/ReceiptLongOutlined';
 import GppGoodOutlined from '@mui/icons-material/GppGoodOutlined';
-import client from '../api/client';
+import client from '../api/client'; 
+import { useAuth } from '../context/AuthContext';
 import { brand } from '../theme';
 import logo from '../assets/logo.png';
 import hero from '../assets/hero.png';
@@ -49,6 +50,7 @@ function FieldLabel({ children }) {
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -73,7 +75,7 @@ export default function Login() {
         password,
         remember,
       });
-      localStorage.setItem('mobix_token', res.data.token);
+      await login(res.data.token);
       navigate('/', { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || t('login.genericError'));
@@ -102,7 +104,7 @@ export default function Login() {
         }}
       >
         <Box>
-          <Box component="img" src={logo} alt="MobiX" sx={{ height: 104, mb: 3, m1: -1 }} />
+          <Box component="img" src={logo} alt="MobiX" sx={{ height: 104, mb: 3, ml: -1 }} />
           <Typography variant="h2" sx={{ fontSize: { md: 44, lg: 56 }, lineHeight: 1.1, color: brand.navy }}>
             {t('login.headline1')}
           </Typography>

@@ -1,38 +1,48 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Box, Button, Typography } from '@mui/material';
-import client from './api/client';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 
 function Home() {
-  const logout = async () => {
-    try {
-      await client.post('/auth/logout');
-    } finally {
-      localStorage.removeItem('mobix_token');
-      window.location.href = '/login';
-    }
-  };
+  const { me, logout, can } = useAuth();
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h5" sx={{ mb: 2 }}>Logged in. Dashboard coming soon.</Typography>
+      <Typography variant="h5" sx={{ mb: 1 }}>
+        Hi {me.user.name} ({me.role.name})
+      </Typography>
+      <Typography sx={{ mb: 2 }}>
+        Settings access: {can('settings') ? 'Yes' : 'No'} | Branches: {me.branches.length}
+      </Typography>
       <Button variant="outlined" onClick={logout}>Logout</Button>
     </Box>
   );
 }
 
 function RequireAuth({ children }) {
-  return localStorage.getItem('mobix_token') ? children : <Navigate to="/login" replace />;
+  const { me, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'grid', placeItems: 'center', minHeight: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  return me ? children : <Navigate to="/login" replace />;
 }
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
