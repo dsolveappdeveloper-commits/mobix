@@ -23,8 +23,8 @@ class AuthController extends Controller
         $data = $request->validate([
             'shop_name'  => ['required', 'string', 'max:255'],
             'owner_name' => ['required', 'string', 'max:255'],
-            'mobile'     => ['required', 'digits:10', 'unique:shops,mobile'],
-            'email'      => ['required', 'email', 'unique:shops,email'],
+            'mobile'     => ['required', 'digits:10', 'unique:shops,mobile', 'unique:users,mobile'],
+            'email'      => ['required', 'email', 'unique:shops,email', 'unique:users,email'],
             'password'   => ['required', 'string', 'min:8'],
             'city'       => ['nullable', 'string', 'max:255'],
             'gstin'      => ['nullable', 'string', 'size:15'],

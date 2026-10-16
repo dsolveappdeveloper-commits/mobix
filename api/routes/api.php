@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\OtpAuthController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\StaffController;
 use Illuminate\Http\Request;
@@ -15,6 +16,13 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/register', [AuthController::class, 'register']);
     Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp']);
     Route::post('/auth/login', [AuthController::class, 'login']);
+
+    //OTP enpoints:
+    Route::post('/auth/forgot-password', [OtpAuthController::class, 'forgotPassword'])->middleware('throttle:5,1');
+    Route::post('/auth/reset-password', [OtpAuthController::class, 'resetPassword'])->middleware('throttle:10,1');
+    Route::post('/auth/login-otp/send', [OtpAuthController::class, 'sendLoginOtp'])->middleware('throttle:5,1');
+    Route::post('/auth/login-otp/verify', [OtpAuthController::class, 'verifyLoginOtp'])->middleware('throttle:10,1');
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);

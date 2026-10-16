@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -59,10 +59,24 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [loggedOut, setLoggedOut] = useState(Boolean(location.state?.loggedOut));
+
+  useEffect(() => {
+    if (location.state?.loggedOut) {
+      navigate('/login', { replace: true, state: null });
+    }
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    if (!loggedOut) return;
+    const timer = setTimeout(() => setLoggedOut(false), 4000);
+    return () => clearTimeout(timer);
+  }, [loggedOut]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(''); 
+    setLoggedOut(false);
 
     if (!identifier.trim() || !password) {
       setError(t('login.required'));
@@ -144,7 +158,7 @@ export default function Login() {
             <Typography sx={{ color: brand.muted, mt: 0.5 }}>{t('login.signInTo')}</Typography>
           </Box>
 
-           {location.state?.loggedOut && !error && (
+           {loggedOut && !error && (
             <Alert severity="success" sx={{ mb: 2 }}>
               {t('login.loggedOut')}
             </Alert>
@@ -162,7 +176,10 @@ export default function Login() {
               fullWidth
               autoFocus
               value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
+              onChange={(e) => {
+                setIdentifier(e.target.value);
+                setLoggedOut(false);
+              }}
               placeholder={t('login.identifierPlaceholder')}
               autoComplete="username"
               sx={{ mb: 2.5 }}
@@ -182,7 +199,10 @@ export default function Login() {
               fullWidth
               type={showPassword ? 'text' : 'password'}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setLoggedOut(false);
+              }}
               placeholder={t('login.passwordPlaceholder')}
               autoComplete="current-password"
               slotProps={{

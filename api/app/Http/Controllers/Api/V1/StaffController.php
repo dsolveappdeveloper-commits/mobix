@@ -26,11 +26,11 @@ class StaffController extends Controller
             'name'           => [$creating ? 'required' : 'sometimes', 'string', 'max:255'],
             'mobile'         => [
                 $creating ? 'required' : 'sometimes', 'digits:10',
-                Rule::unique('users')->where('shop_id', $shopId)->ignore($ignoreId),
+                Rule::unique('users')->ignore($ignoreId),
             ],
             'email'          => [
                 'nullable', 'email',
-                Rule::unique('users')->where('shop_id', $shopId)->ignore($ignoreId),
+                Rule::unique('users')->ignore($ignoreId),
             ],
             'password'       => [$creating ? 'required' : 'sometimes', 'string', 'min:8'],
             'role_id'        => [

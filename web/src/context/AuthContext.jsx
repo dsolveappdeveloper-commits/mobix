@@ -48,11 +48,16 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const refreshMe = async () => {
+    const res = await client.get('/me');
+    setMe(res.data);
+  };
+
   // can('settings', 'edit') -> true / false
   const can = (module, action = 'view') => Boolean(me?.permissions?.[module]?.[action]);
 
   return (
-    <AuthContext.Provider value={{ me, loading, login, logout, can, branchId, setBranchId }}>
+    <AuthContext.Provider value={{ me, loading, login, logout, can, branchId, setBranchId, refreshMe }}>
       {children}
     </AuthContext.Provider>
   );

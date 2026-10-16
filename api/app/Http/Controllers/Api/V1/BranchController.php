@@ -15,13 +15,16 @@ class BranchController extends Controller
         $user = $request->user();
         $query = Branch::query()->orderBy('name');
 
-        // Admin sees all branches, others only the branches they are allowed
         if ($user->role->name !== 'Admin') {
             $query->whereHas('users', fn ($q) => $q->where('users.id', $user->id));
         }
 
         if ($request->filled('q')) {
             $query->where('name', 'like', '%'.$request->q.'%');
+        }
+
+        if ($request->filled('id')) {
+            $query->where('id', $request->id);
         }
 
         return $query->paginate($request->integer('per_page', 25));
