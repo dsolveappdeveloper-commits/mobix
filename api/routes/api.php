@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\BrandController;
+use App\Http\Controllers\Api\V1\DeviceModelController;
+use App\Http\Controllers\Api\V1\DeviceTypeController;
 use App\Http\Controllers\Api\V1\OtpAuthController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\RoleController;
@@ -33,6 +36,17 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware('permission:settings,view')->get('/settings', [SettingsController::class, 'index']);
         Route::middleware('permission:settings,edit')->put('/settings', [SettingsController::class, 'update']);
+
+        foreach ([
+            'device-types' => DeviceTypeController::class,
+            'brands'       => BrandController::class,
+            'models'       => DeviceModelController::class,
+        ] as $path => $controller) {
+            Route::get("/$path", [$controller, 'index']);
+            Route::post("/$path", [$controller, 'store'])->middleware('permission:settings,create');
+            Route::put("/$path/{id}", [$controller, 'update'])->middleware('permission:settings,edit');
+            Route::delete("/$path/{id}", [$controller, 'destroy'])->middleware('permission:settings,delete');
+        }
 
         Route::get('/branches', [BranchController::class, 'index']);
         Route::get('/branches/{branch}', [BranchController::class, 'show']);

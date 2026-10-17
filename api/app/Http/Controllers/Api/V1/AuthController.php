@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Role;
 use App\Models\Shop;
 use App\Models\User;
+use App\Support\DefaultMasters;
 use App\Support\DefaultRoles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -81,6 +82,7 @@ class AuthController extends Controller
             ]);
 
             DefaultRoles::createForShop($shop->id);
+            DefaultMasters::createForShop($shop->id);
 
             $adminRole = Role::where('shop_id', $shop->id)
                 ->where('name', 'Admin')
