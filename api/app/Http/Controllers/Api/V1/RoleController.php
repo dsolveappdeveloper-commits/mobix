@@ -8,6 +8,7 @@ use App\Support\DefaultRoles;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
@@ -38,6 +39,88 @@ class RoleController extends Controller
         ]);
 
         return response()->json($roles);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $shopId = $request->user()->shop_id;
+
+        $data = $request->validate([
+            'name'      => ['required', 'string', 'max:50', Rule::unique('roles')->where('shop_id', $shopId)],
+            'copy_from' => ['nullable', Rule::exists('roles', 'id')->where('shop_id', $shopId)->whereNull('deleted_at')],
+        ]);
+
+        $role = DB::transaction(function () use ($data, $shopId) {
+            $role = Role::create(['shop_id' => $shopId, 'name' => $data['name'], 'is_system' => false]);
+
+            // copy_from irundha andha role oda permissions copy aagum, illana ellam false
+            $source = isset($data['copy_from'])
+                ? DB::table('role_permissions')->where('role_id', $data['copy_from'])->get()->keyBy('module')
+                : collect();
+
+            foreach (DefaultRoles::MODULES as $module) {
+                $p = $source->get($module);
+
+                DB::table('role_permissions')->insert([
+                    'shop_id'    => $shopId,
+                    'role_id'    => $role->id,
+                    'module'     => $module,
+                    'can_view'   => $p->can_view ?? false,
+                    'can_create' => $p->can_create ?? false,
+                    'can_edit'   => $p->can_edit ?? false,
+                    'can_delete' => $p->can_delete ?? false,
+                    'can_export' => $p->can_export ?? false,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return $role;
+        });
+
+        return response()->json([
+            'id'          => $role->id,
+            'name'        => $role->name,
+            'is_system'   => false,
+            'permissions' => $this->matrix($role->id),
+        ], 201);
+    }
+
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $role = Role::findOrFail($id);
+
+        if ($role->is_system) {
+            return response()->json(['message' => 'System roles cannot be renamed.'], 422);
+        }
+
+        $data = $request->validate([
+            'name' => [
+                'required', 'string', 'max:50',
+                Rule::unique('roles')->where('shop_id', $request->user()->shop_id)->ignore($role->id),
+            ],
+        ]);
+
+        $role->update($data);
+
+        return response()->json(['id' => $role->id, 'name' => $role->name]);
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $role = Role::findOrFail($id);
+
+        if ($role->is_system) {
+            return response()->json(['message' => 'System roles cannot be deleted.'], 422);
+        }
+
+        if ($role->users()->exists()) {
+            return response()->json(['message' => 'This role is assigned to staff. Change their role first.'], 422);
+        }
+
+        $role->delete();
+
+        return response()->json(['message' => 'Role deleted.']);
     }
 
     public function updatePermissions(Request $request, int $id): JsonResponse

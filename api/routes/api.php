@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
 use App\Http\Controllers\Api\V1\OtpAuthController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\StaffController;
 use Illuminate\Http\Request;
@@ -26,6 +27,8 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
+        Route::put('/profile', [ProfileController::class, 'update']);
+        Route::put('/profile/password', [ProfileController::class, 'changePassword']);
 
         Route::get('/branches', [BranchController::class, 'index']);
         Route::get('/branches/{branch}', [BranchController::class, 'show']);
@@ -43,6 +46,9 @@ Route::prefix('v1')->group(function () {
         Route::middleware('permission:settings,delete')->delete('/staff/{id}', [StaffController::class, 'destroy']);
 
         Route::middleware('permission:settings,view')->get('/roles', [RoleController::class, 'index']);
+                Route::middleware('permission:settings,create')->post('/roles', [RoleController::class, 'store']);
+        Route::middleware('permission:settings,edit')->put('/roles/{id}', [RoleController::class, 'update']);
+        Route::middleware('permission:settings,delete')->delete('/roles/{id}', [RoleController::class, 'destroy']);
         Route::middleware('permission:settings,edit')->put('/roles/{id}/permissions', [RoleController::class, 'updatePermissions']);
     });
 });
