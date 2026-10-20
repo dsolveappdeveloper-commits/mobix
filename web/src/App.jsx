@@ -7,6 +7,7 @@ import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import LoginOtp from './pages/auth/LoginOtp';
 import Settings from './pages/settings/Settings';
+import ShopProfile from './pages/settings/ShopProfile';
 import Branches from './pages/settings/Branches';
 import Staff from './pages/settings/Staff';
 import RolesPermissions from './pages/settings/RolesPermissions';
@@ -61,7 +62,8 @@ export default function App() {
               path="/settings"
               element={<RequirePermission module="settings"><Settings /></RequirePermission>}
             >
-              <Route index element={<Navigate to="branches" replace />} />
+              <Route index element={<Navigate to="shop" replace />} />
+              <Route path="shop" element={<ShopProfile />} />
               <Route path="branches" element={<Branches />} />
               <Route path="staff" element={<Staff />} />
               <Route path="roles" element={<RolesPermissions/>} />

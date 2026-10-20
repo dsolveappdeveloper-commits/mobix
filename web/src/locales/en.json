@@ -27,9 +27,32 @@
   },
   "settings": {
     "title": "Settings",
+    "shop": "Shop profile",
     "branches": "Branches",
     "staff": "Staff",
     "roles": "Roles & Permissions"
+  },
+  "shop": {
+    "name": "Shop name",
+    "owner_name": "Owner name",
+    "mobile": "Mobile",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "state": "State",
+    "gstin": "GSTIN",
+    "website": "Website",
+    "review_link": "Google review link",
+    "loginHint": "Login mobile cannot be changed here",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Shop profile saved.",
+    "nameRequired": "Shop name is required",
+    "ownerRequired": "Owner name is required",
+    "gstinInvalid": "GSTIN must be 15 characters in the correct format",
+    "loadError": "Could not load shop profile.",
+    "genericError": "Something went wrong. Please try again."
   },
   "branches": {
     "name": "Name",
