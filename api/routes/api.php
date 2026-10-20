@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\OtpAuthController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\ShopController;
 use App\Http\Controllers\Api\V1\StaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,8 @@ Route::prefix('v1')->group(function () {
         Route::middleware('permission:settings,view')->get('/settings', [SettingsController::class, 'index']);
         Route::middleware('permission:settings,edit')->put('/settings', [SettingsController::class, 'update']);
 
+        Route::middleware('permission:settings,view')->get('/shop', [ShopController::class, 'show']);
+        Route::middleware('permission:settings,edit')->put('/shop', [ShopController::class, 'update']);
         foreach ([
             'device-types' => DeviceTypeController::class,
             'brands'       => BrandController::class,

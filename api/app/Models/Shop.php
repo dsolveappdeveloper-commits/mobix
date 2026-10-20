@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shop extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Auditable;
 
     protected $fillable = [
         'name', 'owner_name', 'mobile', 'email',
         'city', 'state', 'gstin',
+        'address', 'phone', 'website', 'review_link',
     ];
 
     public function branches(): HasMany
