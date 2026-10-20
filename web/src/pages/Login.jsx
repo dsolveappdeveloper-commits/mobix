@@ -59,10 +59,15 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [loggedOut, setLoggedOut] = useState(Boolean(location.state?.loggedOut));
+  const [loggedOut, setLoggedOut] = useState(
+    Boolean(location.state?.loggedOut || location.state?.passwordReset)
+  );
+  const [noticeKey] = useState(
+    location.state?.passwordReset ? 'login.passwordReset' : 'login.loggedOut'
+  );
 
   useEffect(() => {
-    if (location.state?.loggedOut) {
+    if (location.state?.loggedOut || location.state?.passwordReset) {
       navigate('/login', { replace: true, state: null });
     }
   }, [location.state, navigate]);
@@ -160,7 +165,7 @@ export default function Login() {
 
            {loggedOut && !error && (
             <Alert severity="success" sx={{ mb: 2 }}>
-              {t('login.loggedOut')}
+              {t(noticeKey)}
             </Alert>
           )}
 
@@ -254,7 +259,8 @@ export default function Login() {
             <Button
               fullWidth
               variant="outlined"
-              disabled
+              component={RouterLink}
+              to="/login-otp"
               startIcon={<PhoneIphone />}
               sx={{ minHeight: 52, fontSize: 16 }}
             >

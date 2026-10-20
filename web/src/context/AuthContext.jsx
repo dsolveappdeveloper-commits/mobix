@@ -28,6 +28,8 @@ export function AuthProvider({ children }) {
 
   const login = async (token) => {
     localStorage.setItem('mobix_token', token);
+    localStorage.removeItem('mobix_branch');
+    setBranchIdState('all');
     setLoading(true);
     try {
       const res = await client.get('/me');

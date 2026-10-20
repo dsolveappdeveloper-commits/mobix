@@ -3,8 +3,13 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './layout/Layout';
 import Login from './pages/Login';
+import Register from './pages/auth/Register';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import LoginOtp from './pages/auth/LoginOtp';
 import Settings from './pages/settings/Settings';
 import Branches from './pages/settings/Branches';
+import Staff from './pages/settings/Staff';
+import RolesPermissions from './pages/settings/RolesPermissions';
 
 // Temporary placeholder
 function Dashboard() {
@@ -23,10 +28,6 @@ function Dashboard() {
 function RequirePermission({ module, children }) {
   const { can } = useAuth();
   return can(module) ? children : <Navigate to="/" replace />;
-}
-
-function Placeholder({ title }) {
-  return <Typography color="text.secondary">{title} screen coming next.</Typography>;
 }
 
 function RequireAuth({ children }) {
@@ -49,6 +50,9 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/login-otp" element={<LoginOtp />} />
 
           <Route element={<RequireAuth><Layout /></RequireAuth>}>
             <Route path="/" element={<Dashboard />} />
@@ -59,8 +63,8 @@ export default function App() {
             >
               <Route index element={<Navigate to="branches" replace />} />
               <Route path="branches" element={<Branches />} />
-              <Route path="staff" element={<Placeholder title="Staff" />} />
-              <Route path="roles" element={<Placeholder title="Roles" />} />
+              <Route path="staff" element={<Staff />} />
+              <Route path="roles" element={<RolesPermissions/>} />
             </Route>
           </Route>
 
