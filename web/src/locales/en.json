@@ -29,6 +29,7 @@
   "settings": {
     "title": "Settings",
     "preferences": "Preferences",
+    "masters": "Masters",
     "shop": "Shop profile",
     "branches": "Branches",
     "staff": "Staff",
@@ -236,6 +237,50 @@
     "passwordMismatch": "Passwords do not match",
     "passwordChanged": "Password changed.",
     "change": "Change password"
+  },
+  "masters": {
+    "tabs": {
+      "deviceTypes": "Device types",
+      "brands": "Brands",
+      "models": "Models"
+    },
+    "addTitle": {
+      "deviceTypes": "Add device type",
+      "brands": "Add brand",
+      "models": "Add model"
+    },
+    "editTitle": {
+      "deviceTypes": "Edit device type",
+      "brands": "Edit brand",
+      "models": "Edit model"
+    },
+    "name": "Name",
+    "brand": "Brand",
+    "deviceType": "Device type",
+    "tracking": "Tracking",
+    "serial": "Serial no",
+    "requiresImei": "Requires IMEI",
+    "requiresImeiHint": "On = IMEI is mandatory (phones, tablets). Off = serial number.",
+    "sortOrder": "Sort order",
+    "active": "Active",
+    "inactive": "Inactive",
+    "status": "Status",
+    "actions": "Actions",
+    "searchHint": "Search and press Enter",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "empty": "Nothing here yet.",
+    "retry": "Retry",
+    "loadError": "Could not load data.",
+    "saved": "Saved.",
+    "deleted": "Deleted.",
+    "required": "This field is required",
+    "deleteTitle": "Delete?",
+    "deleteConfirm": "Delete {{name}}?",
+    "genericError": "Something went wrong. Please try again."
   },
   "auth": {
     "otp": "OTP",

@@ -8,6 +8,7 @@ const tabs = [
   { labelKey: 'settings.staff', path: '/settings/staff' },
   { labelKey: 'settings.roles', path: '/settings/roles' },
   { labelKey: 'settings.preferences', path: '/settings/preferences' },
+  { labelKey: 'settings.masters', path: '/settings/masters' },
 ];
 
 export default function Settings() {
