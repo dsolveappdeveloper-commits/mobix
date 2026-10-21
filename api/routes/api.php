@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
 use App\Http\Controllers\Api\V1\BrandController;
+use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\DeviceModelController;
 use App\Http\Controllers\Api\V1\DeviceTypeController;
 use App\Http\Controllers\Api\V1\OtpAuthController;
@@ -23,7 +24,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/verify-otp', [AuthController::class, 'verifyOtp']);
     Route::post('/auth/login', [AuthController::class, 'login']);
 
-    //OTP enpoints:
+    // OTP endpoints
     Route::post('/auth/forgot-password', [OtpAuthController::class, 'forgotPassword'])->middleware('throttle:5,1');
     Route::post('/auth/reset-password', [OtpAuthController::class, 'resetPassword'])->middleware('throttle:10,1');
     Route::post('/auth/login-otp/send', [OtpAuthController::class, 'sendLoginOtp'])->middleware('throttle:5,1');
@@ -67,9 +68,17 @@ Route::prefix('v1')->group(function () {
         Route::middleware('permission:settings,delete')->delete('/staff/{id}', [StaffController::class, 'destroy']);
 
         Route::middleware('permission:settings,view')->get('/roles', [RoleController::class, 'index']);
-                Route::middleware('permission:settings,create')->post('/roles', [RoleController::class, 'store']);
+        Route::middleware('permission:settings,create')->post('/roles', [RoleController::class, 'store']);
         Route::middleware('permission:settings,edit')->put('/roles/{id}', [RoleController::class, 'update']);
         Route::middleware('permission:settings,delete')->delete('/roles/{id}', [RoleController::class, 'destroy']);
         Route::middleware('permission:settings,edit')->put('/roles/{id}/permissions', [RoleController::class, 'updatePermissions']);
+
+        // Customers (lookup must stay above {id})
+        Route::middleware('permission:customers,view')->get('/customers/lookup', [CustomerController::class, 'lookup']);
+        Route::middleware('permission:customers,view')->get('/customers', [CustomerController::class, 'index']);
+        Route::middleware('permission:customers,view')->get('/customers/{id}', [CustomerController::class, 'show']);
+        Route::middleware('permission:customers,create')->post('/customers', [CustomerController::class, 'store']);
+        Route::middleware('permission:customers,edit')->put('/customers/{id}', [CustomerController::class, 'update']);
+        Route::middleware('permission:customers,delete')->delete('/customers/{id}', [CustomerController::class, 'destroy']);
     });
 });
