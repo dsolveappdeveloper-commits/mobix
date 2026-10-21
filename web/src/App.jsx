@@ -8,6 +8,8 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import LoginOtp from './pages/auth/LoginOtp';
 import Settings from './pages/settings/Settings';
 import ShopProfile from './pages/settings/ShopProfile';
+import Preferences from './pages/settings/Preferences';
+import Profile from './pages/Profile';
 import Branches from './pages/settings/Branches';
 import Staff from './pages/settings/Staff';
 import RolesPermissions from './pages/settings/RolesPermissions';
@@ -57,6 +59,7 @@ export default function App() {
 
           <Route element={<RequireAuth><Layout /></RequireAuth>}>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
 
             <Route
               path="/settings"
@@ -64,6 +67,7 @@ export default function App() {
             >
               <Route index element={<Navigate to="shop" replace />} />
               <Route path="shop" element={<ShopProfile />} />
+              <Route path="preferences" element={<Preferences />} />
               <Route path="branches" element={<Branches />} />
               <Route path="staff" element={<Staff />} />
               <Route path="roles" element={<RolesPermissions/>} />

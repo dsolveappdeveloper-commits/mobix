@@ -11,6 +11,7 @@ import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import NotificationsNoneOutlined from '@mui/icons-material/NotificationsNoneOutlined';
 import LogoutOutlined from '@mui/icons-material/LogoutOutlined';
+import PersonOutline from '@mui/icons-material/PersonOutline';
 import BuildOutlined from '@mui/icons-material/BuildOutlined';
 import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
 import PersonAddAltOutlined from '@mui/icons-material/PersonAddAltOutlined';
@@ -174,6 +175,10 @@ export default function TopBar({ onMenuClick }) {
           <Typography sx={{ fontSize: 12, color: brand.muted }}>{me.user.mobile}</Typography>
         </Box>
         <Divider />
+        <MenuItem onClick={() => { setUserAnchor(null); navigate('/profile'); }}>
+          <ListItemIcon><PersonOutline fontSize="small" /></ListItemIcon>
+          {t('topbar.profile')}
+        </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon><LogoutOutlined fontSize="small" /></ListItemIcon>
           {t('topbar.logout')}

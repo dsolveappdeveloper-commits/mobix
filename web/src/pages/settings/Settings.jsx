@@ -7,6 +7,7 @@ const tabs = [
   { labelKey: 'settings.branches', path: '/settings/branches' },
   { labelKey: 'settings.staff', path: '/settings/staff' },
   { labelKey: 'settings.roles', path: '/settings/roles' },
+  { labelKey: 'settings.preferences', path: '/settings/preferences' },
 ];
 
 export default function Settings() {
@@ -18,7 +19,7 @@ export default function Settings() {
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>{t('settings.title')}</Typography>
 
-      <Tabs value={current} variant="scrollable" 
+      <Tabs value={current} variant="scrollable" scrollButtons="auto"
         allowScrollButtonsMobile sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}>
         {tabs.map((tab) => (
           <Tab

@@ -23,10 +23,12 @@
     "newSale": "New Sale",
     "newCustomer": "New Customer",
     "notifications": "Notifications",
+    "profile": "My profile",
     "logout": "Logout"
   },
   "settings": {
     "title": "Settings",
+    "preferences": "Preferences",
     "shop": "Shop profile",
     "branches": "Branches",
     "staff": "Staff",
@@ -153,6 +155,87 @@
       "delete": "Delete",
       "export": "Export"
     }
+  },
+    "prefs": {
+    "save": "Save",
+    "saving": "Saving...",
+    "retry": "Retry",
+    "loadError": "Could not load preferences.",
+    "genericError": "Something went wrong. Please try again.",
+    "saved": "Preferences saved.",
+    "unsaved": "Unsaved changes",
+    "sections": {
+      "job": "Jobs",
+      "tax": "Tax & invoice",
+      "inventory": "Inventory",
+      "discount": "Discounts",
+      "notify": "Notifications",
+      "print": "Print"
+    },
+    "fields": {
+      "job": {
+        "default_promised_days": "Default promised days",
+        "default_warranty_days": "Default warranty days",
+        "terms": "Terms & conditions on job sheet"
+      },
+      "tax": {
+        "gst_inclusive": "Prices include GST",
+        "default_labour_gst": "Default GST % for labour",
+        "labour_sac": "Labour SAC code",
+        "round_off": "Round off invoice total",
+        "financial_year_start": "Financial year starts in",
+        "upi_id": "UPI ID (for payment QR)",
+        "invoice_footer": "Invoice footer text"
+      },
+      "inventory": {
+        "allow_negative_stock": "Allow negative stock",
+        "low_stock_alert_time": "Daily low-stock alert time"
+      },
+      "discount": {
+        "front_desk_max_pct": "Max discount % for Front desk"
+      },
+      "notify": {
+        "quiet_start": "Quiet hours start",
+        "quiet_end": "Quiet hours end",
+        "tracking_base_url": "Tracking page base URL"
+      },
+      "print": {
+        "invoice_paper": "Invoice paper",
+        "job_sheet_paper": "Job sheet paper",
+        "label_paper": "Label paper"
+      }
+    },
+    "help": {
+      "tax": {
+        "gst_inclusive": "On = entered prices already include GST",
+        "labour_sac": "Confirm with your accountant"
+      },
+      "notify": {
+        "quiet_start": "Non-urgent messages are not sent during quiet hours"
+      }
+    }
+  },
+  "profile": {
+    "title": "My profile",
+    "name": "Name",
+    "mobile": "Mobile",
+    "mobileHint": "Mobile is your login ID. Ask an Admin to change it.",
+    "email": "Email",
+    "save": "Save",
+    "saving": "Saving...",
+    "genericError": "Something went wrong. Please try again.",
+    "nameRequired": "Name is required",
+    "emailInvalid": "Enter a valid email",
+    "saved": "Profile updated.",
+    "passwordTitle": "Change password",
+    "current": "Current password",
+    "new": "New password",
+    "confirm": "Confirm new password",
+    "currentRequired": "Enter your current password",
+    "passwordShort": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match",
+    "passwordChanged": "Password changed.",
+    "change": "Change password"
   },
   "auth": {
     "otp": "OTP",
