@@ -21,6 +21,7 @@ class CheckPermission
 
         $allowed = DB::table('role_permissions')
             ->where('role_id', $user->role_id)
+            ->where('shop_id', $user->shop_id)
             ->where('module', $module)
             ->value('can_'.$action);
 

@@ -14,7 +14,9 @@ trait BelongsToShop
                 $builder->where(
                     $builder->getModel()->getTable().'.shop_id',
                     Auth::user()->shop_id
-                );
+                    );
+            } elseif (! app()->runningInConsole()) {
+                $builder->whereRaw('1 = 0');
             }
         });
 
