@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import Branches from './pages/settings/Branches';
 import Staff from './pages/settings/Staff';
 import RolesPermissions from './pages/settings/RolesPermissions';
+import Customers from './pages/customers/Customers';
 
 // Temporary placeholder
 function Dashboard() {
@@ -61,6 +62,11 @@ export default function App() {
           <Route element={<RequireAuth><Layout /></RequireAuth>}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
+
+            <Route
+              path="/customers"
+              element={<RequirePermission module="customers"><Customers /></RequirePermission>}
+            />
 
             <Route
               path="/settings"
